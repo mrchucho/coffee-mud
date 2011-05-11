@@ -1,6 +1,7 @@
 net = require('net')
 events = require('events')
 Game = require('./game').Game
+Player = require('./player')
 
 class Reporter extends events.EventEmitter # extends "Logic" # ... actually just imitates Logic...
   constructor: (@player, @client) ->
@@ -11,20 +12,16 @@ class Reporter extends events.EventEmitter # extends "Logic" # ... actually just
 
   see: (what) ->
     # room vs realm vs player vs item ...
-    @client.display("You see #{what.name}.")
+    @client.display("You see #{what.name || what.description}.")
+    @client.display("It is a #{what.size} room.") if what.size?
+    occupants = for player in (what.players || [])
+      player.name
+    if occupants?.length > 0
+      @client.display("#{occupants.join(', ')} #{if occupants.length == 1 then "is" else "are"} here.")
 
   say: (who, says) ->
     speaker = if who == @player then "You say" else "#{who.name} says"
-    @client.display("#{speaker} #{says}.")
-
-
-class Player extends events.EventEmitter
-  constructor: (@name) ->
-    @logic = []
-    @on('action', (args) ->
-      console.log("#{@name} is handling: #{args['action']}")
-      logic.emit(args['action'], args) for logic in @logic
-    )
+    @client.display("#{speaker} #{says}")
 
 
 class Handler
@@ -82,11 +79,9 @@ class Client extends events.EventEmitter
     @on('heard', (msg) -> @conn.write msg)
     @on('end', -> @conn.end())
 
-  display: (msg) ->
-    @emit('heard', msg + "\n")
+  display: (msg) -> @emit('heard', msg + "\n")
 
-  prompt: (msg) ->
-    @emit('heard', msg)
+  prompt: (msg) -> @emit('heard', msg)
 
   end: ->
     # clear handlers, notify observers, etc
@@ -102,7 +97,6 @@ class Client extends events.EventEmitter
     @handlers[@handlers.length - 1].enter()
 
   remove_handler: ->
-    console.log "remove top handler"
     if @handlers?.length isnt 0
       @handlers[@handlers.length - 1].leave()
       @handlers.pop()
@@ -110,6 +104,12 @@ class Client extends events.EventEmitter
 
 
 # -------------- MAIN ------------------
+Game.createRoom("Entrance Hall", (room) ->
+  room.size = "big"
+)
+console.log("The Game now has #{Game.rooms.length} rooms:")
+console.log("\t#{room.description} - #{room.size}") for room in Game.rooms
+
 server = net.createServer((stream) ->
   stream.setEncoding 'utf8'
   client = new Client(stream)
@@ -123,6 +123,7 @@ server = net.createServer((stream) ->
   )
 
   stream.on('end', ->
+    # FIXME clean up!
     client.end
   )
 )
