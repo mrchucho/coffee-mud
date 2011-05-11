@@ -64,6 +64,8 @@ game.on('enter realm', (player) ->
 )
 game.on('leave realm', (player) ->
   console.log("Player #{player.name} left the game")
+  for own name, player of game.players
+    player.emit('action', {action: 'leave realm', performer: player})
   # FIXME
   for room in game.rooms
     room.players.splice(room.players.indexOf(player), 1)
