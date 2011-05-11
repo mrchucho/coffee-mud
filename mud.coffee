@@ -21,7 +21,7 @@ class Reporter extends events.EventEmitter # extends "Logic" # ... actually just
 
   say: (who, says) ->
     speaker = if who == @player then "You say" else "#{who.name} says"
-    @client.display("#{speaker} #{says}")
+    @client.display("#{speaker} \"#{says}\"")
 
 
 class Handler
@@ -39,11 +39,11 @@ class GameHandler extends Handler
   enter: ->
     # add logic from db/template
     @player.logic.push(new Reporter(@player, @client))
-    Game.emit 'enterrealm', @player
+    Game.emit 'enter realm', @player
 
   leave: ->
     # remove logic
-    Game.emit 'leaverealm', @player
+    Game.emit 'leave realm', @player
     @client.display "Goodbye"
     @client.end()
 
