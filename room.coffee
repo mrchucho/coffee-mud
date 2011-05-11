@@ -6,4 +6,6 @@ class Room extends GameEntity
     @size = null
     super()
 
+  toString: -> @description
+
 module.exports = Room

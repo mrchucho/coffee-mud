@@ -5,4 +5,6 @@ class Player extends GameEntity
     @room = null
     super()
 
+  toString: -> @name
+
 module.exports = Player
