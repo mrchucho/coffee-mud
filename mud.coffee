@@ -9,6 +9,7 @@ class Reporter extends events.EventEmitter # extends "Logic" # ... actually just
     @on('say', (event) -> @say(event['performer'], event['msg']))
     @on('see', (event) -> @see(event['target']))
     @on('leave', (event) -> @client.remove_handler())
+    @on('leave realm', (event) -> @client.display("#{event.performer} has left the realm"))
 
   see: (what) ->
     # room vs realm vs player vs item ...
