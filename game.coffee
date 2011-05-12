@@ -5,13 +5,15 @@ class Game extends EventEmitter
   constructor: ->
     @players = {}
     @rooms   = []
-    @commands = {
-      'help': @help,
-      'look': @look,
-      'say':  @say,
-      'quit': @quit,
-    }
+    @commands =
+      help: @help
+      look: @look
+      say:  @say
+      quit: @quit
 
+# -----------------------------------------------------------------------------
+# Commands
+# -----------------------------------------------------------------------------
   help: (player, args...)->
     help_msg = for cmd, f of game.commands
       cmd
@@ -30,6 +32,9 @@ class Game extends EventEmitter
   quit: (player) ->
     player.emit('action', {action: 'leave', performer: player})
 
+# -----------------------------------------------------------------------------
+# Game Utility Methods
+# -----------------------------------------------------------------------------
   createRoom: (desc, f) ->
     room = new Room(desc)
     @rooms.push room
@@ -42,8 +47,12 @@ class Game extends EventEmitter
       f(p) for own n, p of game.players
 
 
+# The Game!
 game = new Game
 
+# -----------------------------------------------------------------------------
+# Game Engine Functionality
+# -----------------------------------------------------------------------------
 game.on('command', (player, args) ->
   console.log("[#{player.name}] does [#{args.data.trim()}]")
   [cmd, args...] = args.data.trim().split(' ')

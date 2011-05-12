@@ -7,7 +7,6 @@ class Client extends EventEmitter
     @on('end', -> @conn.end())
 
   display: (msg) -> @emit('heard', msg + "\n")
-
   prompt: (msg) -> @emit('heard', msg)
 
   end: ->
