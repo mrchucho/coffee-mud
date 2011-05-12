@@ -36,6 +36,10 @@ class Game extends EventEmitter
   quit: (player) ->
     player.emit('action', {action: 'leave', performer: player})
 
+  emote: (player, args...) ->
+    game.emit('vision', player.room, {sight: "#{player} #{args.join(' ')}"})
+
+
 # -----------------------------------------------------------------------------
 # Game Utility Methods
 # -----------------------------------------------------------------------------
@@ -94,6 +98,10 @@ game.on('leave realm', (player) ->
   for room in game.rooms
     room.players.splice(room.players.indexOf(player), 1)
   delete game.players[player.name]
+)
+game.on('vision', (where, args) ->
+  for player in where.players
+    player.emit('action', {action: 'vision', sight: args.sight})
 )
 
 (exports ? this).Game = game
