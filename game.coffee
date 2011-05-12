@@ -35,6 +35,13 @@ class Game extends EventEmitter
     @rooms.push room
     f room
 
+  allPlayers: (opts, f) ->
+    if opts.except?
+      f(p) for own n, p of game.players when p isnt opts.except
+    else
+      f(p) for own n, p of game.players
+
+
 game = new Game
 
 game.on('command', (player, args) ->
@@ -61,11 +68,15 @@ game.on('enter realm', (player) ->
   room.players.push player
   player.room = room
   game.players[player.name] = player
+  game.allPlayers({except: player}, (p) ->
+    p.emit('action', {action: 'enter realm', performer: player})
+  )
 )
 game.on('leave realm', (player) ->
   console.log("Player #{player.name} left the game")
-  for own name, player of game.players
-    player.emit('action', {action: 'leave realm', performer: player})
+  game.allPlayers({except: player}, (p) ->
+    p.emit('action', {action: 'leave realm', performer: player})
+  )
   # FIXME
   for room in game.rooms
     room.players.splice(room.players.indexOf(player), 1)
