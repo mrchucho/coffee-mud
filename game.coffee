@@ -5,23 +5,27 @@ class Game extends EventEmitter
   constructor: ->
     @players = {}
     @rooms   = []
-    @commands =
-      help: @help
-      look: @look
-      say:  @say
-      quit: @quit
+    @commands = # [callback, usage, description]
+      help:  [@help,  'help', 'Get a list of commands']
+      look:  [@look,  'look [object]', 'Look at the room(default) or at an object within the room']
+      say:   [@say,   'say <phrase>', 'Speak']
+      quit:  [@quit,  'quit', 'Quit the Game']
+      emote: [@emote, 'emote <verb phrase>', 'Perform a superfluous action']
 
 # -----------------------------------------------------------------------------
 # Commands
 # -----------------------------------------------------------------------------
   help: (player, args...)->
-    help_msg = for cmd, f of game.commands
-      cmd
-    player.emit('action', {
-      action: 'announce',
-      performer:player,
-      msg: "The following commands are available: #{help_msg.join(', ')}"
-    })
+    cmd = game.commands[args[0]]
+    msg = 
+      if cmd?
+        "    #{cmd[1]} - #{cmd[2]}"
+      else
+        help_msg = for c, u of game.commands
+          "    #{u[1]} - #{u[2]}"
+        "The following commands are available:\n#{help_msg.join('\n')}"
+
+    player.emit('action', {action: 'announce', performer:player, msg: msg})
 
   look: (player, args...) ->
     game.emit('attempt look', player, {target: args.join(' ')})
@@ -56,7 +60,7 @@ game = new Game
 game.on('command', (player, args) ->
   console.log("[#{player.name}] does [#{args.data.trim()}]")
   [cmd, args...] = args.data.trim().split(' ')
-  game.commands[cmd]?(player, args...)
+  game.commands[cmd]?[0]?(player, args...)
 )
 game.on('attempt say', (speaker, args) ->
   # do stuff...
