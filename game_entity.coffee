@@ -4,7 +4,7 @@ class GameEntity extends EventEmitter
   constructor: ->
     @logic = []
     @on('action', (args) ->
-      console.log("[#{@name || @description}] is handling [#{args.action}]")
+      console.log("[#{@}] is handling [#{args.action}]")
       logic.emit(args.action, args) for logic in @logic
     )
 
