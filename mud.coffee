@@ -5,11 +5,12 @@ Player = require('./player')
 
 class Reporter extends events.EventEmitter # extends "Logic" # ... actually just imitates Logic...
   constructor: (@player, @client) ->
-    @on('announce', (event) -> @client.display(event['msg']))
-    @on('say', (event) -> @say(event['performer'], event['msg']))
-    @on('see', (event) -> @see(event['target']))
+    @on('announce', (event) -> @client.display(event.msg))
+    @on('say', (event) -> @say(event.performer, event.msg))
+    @on('see', (event) -> @see(event.target))
     @on('leave', (event) -> @client.remove_handler())
     @on('leave realm', (event) -> @client.display("#{event.performer} has left the realm"))
+    @on('enter realm', (event) -> @client.display("#{event.performer} has entered the realm"))
 
   see: (what) ->
     # room vs realm vs player vs item ...

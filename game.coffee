@@ -38,22 +38,22 @@ class Game extends EventEmitter
 game = new Game
 
 game.on('command', (player, args) ->
-  console.log("[#{player.name}] does [#{args['data'].trim()}]")
-  [cmd, args...] = args['data'].trim().split(' ')
+  console.log("[#{player.name}] does [#{args.data.trim()}]")
+  [cmd, args...] = args.data.trim().split(' ')
   game.commands[cmd]?(player, args...)
 )
 game.on('attempt say', (speaker, args) ->
   # do stuff...
   for own name, player of game.players
-    player.emit('action', {action: 'say', performer:speaker, msg: args['msg']})
+    player.emit('action', {action: 'say', performer:speaker, msg: args.msg})
 )
 game.on('attempt look', (looker, args) ->
-  target = game.players[args['target']] || game.rooms[0]
+  target = game.players[args.target] || game.rooms[0]
   if target?
     looker.emit('action', {action: 'see', target: target})
     target.emit('action', {action: 'announce', msg: "#{looker.name} looks at you."})
   else
-    looker.emit('action', {action: 'announce', msg: "You don't see #{args['target']} here."})
+    looker.emit('action', {action: 'announce', msg: "You don't see #{args.target} here."})
 )
 game.on('enter realm', (player) ->
   console.log("Player #{player.name} entered the game")
