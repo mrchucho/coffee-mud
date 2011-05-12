@@ -1,9 +1,9 @@
 net = require('net')
-events = require('events')
+EventEmitter = require('events').EventEmitter
 Game = require('./game').Game
 Player = require('./player')
 
-class Reporter extends events.EventEmitter # extends "Logic" # ... actually just imitates Logic...
+class Reporter extends EventEmitter # extends "Logic" # ... actually just imitates Logic...
   constructor: (@player, @client) ->
     @on('announce', (event) -> @client.display(event.msg))
     @on('say', (event) -> @say(event.performer, event.msg))
@@ -75,7 +75,7 @@ class LoginHandler extends Handler
 
 
 # Effectively chuchomud's "PlayerConnection"
-class Client extends events.EventEmitter
+class Client extends EventEmitter
   constructor: (@conn) ->
     @handlers = []
     @on('heard', (msg) -> @conn.write msg)
