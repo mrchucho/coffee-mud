@@ -50,7 +50,7 @@ class LoginHandler extends Handler
         else
           player = new Player(name)
           # player.logic.push ... # FIXME load logics from template
-          @client.switch_handler new GameHandler(player, @client)
+          @client.switchHandler new GameHandler(player, @client)
 
 
 module.exports = LoginHandler

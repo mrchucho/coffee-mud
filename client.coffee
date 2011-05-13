@@ -11,18 +11,18 @@ class Client extends EventEmitter
   prompt: (msg) -> @emit('heard', msg)
 
   end: ->
-    @remove_handler() while @handlers.length > 0
+    @removeHandler() while @handlers.length > 0
 
   update: (data) ->
-    @handlers[@handlers.length - 1].handle data
+    @handlers.top().handle data
 
-  switch_handler: (handler) ->
+  switchHandler: (handler) ->
     @handlers.top().leave() if @handlers.length isnt 0
     @handlers.pop()
     @handlers.push(handler)
     @handlers.top().enter()
 
-  remove_handler: ->
+  removeHandler: ->
     if @handlers?.length isnt 0
       @handlers.top().leave()
       @handlers.pop()

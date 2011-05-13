@@ -28,7 +28,7 @@ server = net.createServer((stream) ->
   client = new Client(stream)
 
   stream.on('connect', ->
-    client.switch_handler new LoginHandler(client)
+    client.switchHandler new LoginHandler(client)
   )
 
   stream.on('data', (data) ->

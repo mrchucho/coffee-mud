@@ -7,7 +7,7 @@ class Reporter extends EventEmitter # extends "Logic" # ... actually just imitat
     @on('say', (event) -> @say(event.performer, event.msg))
     @on('see', (event) -> @see(event.target))
     @on('vision', (event) -> @d event.sight.replace(@player.name, 'You'))
-    @on('leave', (event) -> @client.remove_handler())
+    @on('leave', (event) -> @client.removeHandler())
     @on('leave realm', (event) -> @d "#{event.performer} has left the realm")
     @on('enter realm', (event) -> @d "#{event.performer} has entered the realm")
     @on('enter room', (event) -> @enterRoom(event.performer, event.portal))
