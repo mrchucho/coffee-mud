@@ -57,7 +57,7 @@ class Game extends EventEmitter
   createRoom: (desc, f) ->
     room = new Room(desc)
     @rooms.push room
-    f room
+    f room if f?
     room
 
   # TODO make opts composible, e.g. except: player, in: room
