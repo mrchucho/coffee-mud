@@ -41,7 +41,9 @@ class LoginHandler extends Handler
         @state = 'entername'
       when 'entername'
         name = data.trim()
-        if Game.players[name]?
+        if name == ""
+          @client.display "Please enter your name: "
+        else if Game.players[name]?
           @client.display "That name is already taken."
           @client.prompt  "Please enter your name: "
         else
