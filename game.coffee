@@ -48,7 +48,7 @@ class Game extends EventEmitter
     @rooms.push room
     f room
 
-  allPlayers: (opts, f) ->
+  allPlayers: (opts = {}, f) ->
     if opts.except?
       f(p) for own n, p of game.players when p isnt opts.except
     else
@@ -64,12 +64,17 @@ game = new Game
 game.on('command', (player, args) ->
   console.log("[#{player.name}] does [#{args.data.trim()}]")
   [cmd, args...] = args.data.trim().split(' ')
+  cmd =
+    if cmd.match(/^'/) then "say"
+    else if cmd.match(/^me/) then "emote"
+    else cmd
   game.commands[cmd]?[0]?(player, args...)
 )
 game.on('attempt say', (speaker, args) ->
   # do stuff...
-  for own name, player of game.players
+  game.allPlayers(null, (player) ->
     player.emit('action', {action: 'say', performer:speaker, msg: args.msg})
+  )
 )
 game.on('attempt look', (looker, args) ->
   target = game.players[args.target] || game.rooms[0]
