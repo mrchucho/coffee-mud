@@ -5,3 +5,4 @@
 * Improve Room & "look"
   > Replace player name with "You" in list of occupants
   > You are in <room.name>. <room.description>.
+* Implement: /, clear

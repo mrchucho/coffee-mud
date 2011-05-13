@@ -36,8 +36,7 @@ server = net.createServer((stream) ->
   )
 
   stream.on('end', ->
-    # FIXME clean up!
-    client.end
+    client.end()
   )
 )
 

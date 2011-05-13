@@ -1,4 +1,5 @@
 EventEmitter = require('events').EventEmitter
+require 'utils'
 
 class Client extends EventEmitter
   constructor: (@conn) ->
@@ -10,23 +11,23 @@ class Client extends EventEmitter
   prompt: (msg) -> @emit('heard', msg)
 
   end: ->
-    # clear handlers, notify observers, etc
-    @emit('end')
+    @remove_handler() while @handlers.length > 0
 
   update: (data) ->
     @handlers[@handlers.length - 1].handle data
 
   switch_handler: (handler) ->
-    @handlers[@handlers.length - 1].leave() if @handlers.length isnt 0
+    @handlers.top().leave() if @handlers.length isnt 0
     @handlers.pop()
     @handlers.push(handler)
-    @handlers[@handlers.length - 1].enter()
+    @handlers.top().enter()
 
   remove_handler: ->
     if @handlers?.length isnt 0
-      @handlers[@handlers.length - 1].leave()
+      @handlers.top().leave()
       @handlers.pop()
-      @handlers[@handlers.length - 1].enter() if @handlers.length isnt 0
+      @handlers.top().enter() if @handlers.length isnt 0
+    @emit('end') if @handlers.length == 0
 
 
 module.exports = Client

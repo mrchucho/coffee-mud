@@ -23,7 +23,6 @@ class GameHandler extends Handler
     # remove logic
     Game.emit 'leave realm', @player
     @client.display "Goodbye"
-    @client.end()
 
   handle: (data) ->
     Game.emit 'command', @player, {data: data}

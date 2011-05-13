@@ -5,3 +5,6 @@ module.exports =
 
   Array::first = ->
     @[0]
+
+  Array::top = ->
+    @[@.length - 1]
