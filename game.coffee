@@ -48,7 +48,7 @@ class Game extends EventEmitter
     @rooms.push room
     f room
 
-  allPlayers: (opts = {}, f) ->
+  allPlayers: (opts..., f) ->
     if opts.except?
       f(p) for own n, p of game.players when p isnt opts.except
     else
@@ -72,7 +72,7 @@ game.on('command', (player, args) ->
 )
 game.on('attempt say', (speaker, args) ->
   # do stuff...
-  game.allPlayers(null, (player) ->
+  game.allPlayers((player) ->
     player.emit('action', {action: 'say', performer:speaker, msg: args.msg})
   )
 )
