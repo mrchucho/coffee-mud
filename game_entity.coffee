@@ -8,4 +8,7 @@ class GameEntity extends EventEmitter
       logic.emit(args.action, args) for logic in @logic
     )
 
+  named: (name) ->
+    name.toLowerCase() == @toString().toLowerCase()
+
 module.exports = GameEntity

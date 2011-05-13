@@ -5,9 +5,15 @@ Client = require('./client')
 LoginHandler = require('./handlers')
 
 # -------------- MAIN ------------------
-Game.createRoom("Entrance Hall", (room) ->
+hall = Game.createRoom("Entrance Hall", (room) ->
   room.size = "big"
 )
+
+Game.createRoom("Antechamber", (room) ->
+  room.size = "very small"
+  room.addPortal(named: "Door", to: hall, looped:true)
+)
+
 console.log("The Game now has #{Game.rooms.length} rooms:")
 console.log("\t#{room.description} - #{room.size}") for room in Game.rooms
 
