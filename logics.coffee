@@ -3,7 +3,7 @@ EventEmitter = require('events').EventEmitter
 
 class Reporter extends EventEmitter # extends "Logic" # ... actually just imitates Logic...
   constructor: (@player, @client) ->
-    @on('announce', (event) -> @d event.msg )
+    @on('announce', (event) -> @d event.msg)
     @on('say', (event) -> @say(event.performer, event.msg))
     @on('see', (event) -> @see(event.target))
     @on('vision', (event) -> @d event.sight.replace(@player.name, 'You'))
@@ -30,7 +30,7 @@ class Reporter extends EventEmitter # extends "Logic" # ... actually just imitat
 
   enterRoom: (player, portal) ->
     if player == @player
-      Game.emit('attempt look', @player)
+      Game.emit 'attempt look', @player
     else
       @d(
         if portal? then "#{player} enters from #{portal}" else "#{player} appears from nowhere"
@@ -44,5 +44,6 @@ class Reporter extends EventEmitter # extends "Logic" # ... actually just imitat
 
   d: (msg) ->
     @client.display msg
+
 
 module.exports = Reporter

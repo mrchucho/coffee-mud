@@ -33,6 +33,8 @@ class LoginHandler extends Handler
   constructor: (@client) ->
     @state = 'init'
 
+  enter: -> @handle()
+
   handle: (data) ->
     switch @state
       when 'init'
