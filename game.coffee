@@ -28,7 +28,7 @@ class Game extends EventEmitter
     player.emit('action', {action: 'announce', performer:player, msg: msg})
 
   look: (player, args...) ->
-    game.emit('attempt look', player, {target: args.join(' ')})
+    game.emit('attempt look', player, {target: args.join(' ') if args.length > 0})
 
   say: (player, args...) ->
     game.emit('attempt say', player, {msg: args.join(' ')})
@@ -77,7 +77,8 @@ game.on('attempt say', (speaker, args) ->
   )
 )
 game.on('attempt look', (looker, args) ->
-  target = game.players[args.target] || game.rooms[0]
+                                                             # looker.room
+  target = if args.target? then game.players[args.target] else game.rooms[0]
   if target?
     looker.emit('action', {action: 'see', target: target})
     target.emit('action', {action: 'announce', msg: "#{looker.name} looks at you."})
