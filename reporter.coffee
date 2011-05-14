@@ -1,7 +1,8 @@
 Game = require('./game').Game
 EventEmitter = require('events').EventEmitter
 
-class Reporter extends EventEmitter # extends "Logic" # ... actually just imitates Logic...
+# Reporter acts like Logic but is for a special case.
+class Reporter extends EventEmitter
   constructor: (@player, @client) ->
     @on('announce', (event) -> @d event.msg)
     @on('say', (event) -> @say(event.performer, event.msg))

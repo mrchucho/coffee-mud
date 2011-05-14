@@ -1,6 +1,6 @@
 Game = require('./game').Game
 Player = require('./player')
-Reporter = require('./logics')
+Reporter = require('./reporter')
 
 class Handler
   enter: ->
@@ -16,7 +16,7 @@ class GameHandler extends Handler
 
   enter: ->
     # add logic from db/template
-    @player.logic.push(new Reporter(@player, @client))
+    @player.addLogic new Reporter(@player, @client)
     Game.emit 'enter realm', @player
 
   leave: ->

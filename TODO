@@ -1,3 +1,4 @@
+* enter/leave room on enter/leave game/realm!
 * Unrecognized command error
 * Raise error if command is missing arguments
 * Run from a chroot jail, log to file (+logrotate)?
@@ -6,3 +7,8 @@
   > Replace player name with "You" in list of occupants
   > You are in <room.name>. <room.description>.
 * Implement: /, clear
+* Logic:
+  DONE lib/logic
+  DONE require <directory>
+  DONE Implement some Portal logic
+  > Try writing a BLOCKING logic and see how everything else reacts

@@ -1,4 +1,4 @@
-require('./utils')
+require('./ext')
 EventEmitter = require('events').EventEmitter
 Room = require('./room')
 
@@ -87,17 +87,41 @@ game.on('command', (player, args) ->
   game.commands[cmd]?.first()?(player, args...)
 )
 game.on('attempt say', (speaker, args) ->
-  # do stuff...
-  game.allPlayers in: speaker.room, (player) ->
-    player.emit('action', {action: 'say', performer:speaker, msg: args.msg})
+  if [speaker, speaker.room].every((t) -> t.ask(speaker, 'can say'))
+    game.allPlayers in: speaker.room, (player) ->
+      player.emit('action', {action: 'say', performer: speaker, msg: args.msg})
+    speaker.room.emit('action', {action: 'say', performer: speaker, msg: args.msg})
 )
 game.on('attempt look', (looker, args) ->
-  target = if args?.target? then game.players[args.target] else looker.room
-  if target?
-    looker.emit('action', {action: 'see', target: target})
-    target.emit('action', {action: 'announce', msg: "#{looker.name} looks at you."})
-  else
-    looker.emit('action', {action: 'announce', msg: "You don't see #{args.target} here."})
+  if [looker, looker.room].every((t) -> t.ask(looker, 'can look'))
+    target = if args?.target? then game.players[args.target] else looker.room
+    if target?
+      looker.emit('action', {action: 'see', target: target})
+      target.emit('action', {action: 'announce', msg: "#{looker} looks at you."})
+    else
+      looker.emit('action', {action: 'announce', msg: "You don't see #{args.target} here."})
+)
+game.on('attempt enter portal', (player, args) ->
+  oldRoom = player.room
+  newRoom = args.room
+  portal  = args.portal
+
+  if [player, oldRoom, newRoom, portal].every((t) -> t.ask(player, 'can enter portal', portal))
+    oldRoom.players.remove(player)
+    newRoom.players.push(player)
+    player.room = newRoom
+
+    game.allPlayers in: oldRoom, (p) ->
+      p.emit('action', {action: 'leave room', performer: player, room: oldRoom, portal: portal})
+    oldRoom.emit('action', {action: 'leave room', performer: player, room: oldRoom, portal: portal})
+
+    if portal?
+      for p in [portal, player]
+        p.emit('action', {action: 'enter portal', performer: player, portal: portal})
+
+    game.allPlayers in: newRoom, (p) ->
+      p.emit('action', {action: 'enter room', performer: player, room: newRoom, portal: portal})
+    newRoom.emit('action', {action: 'enter room', performer: player, room: newRoom, portal: portal})
 )
 game.on('enter realm', (player) ->
   console.log("Player #{player.name} entered the game")
@@ -120,26 +144,6 @@ game.on('leave realm', (player) ->
 game.on('vision', (where, args) ->
   for player in where.players
     player.emit('action', {action: 'vision', sight: args.sight})
-)
-game.on('attempt enter portal', (player, args) ->
-  # TODO query portal, room, region, etc. Can player transport?
-  oldRoom = player.room
-  newRoom = args.room
-  portal  = args.portal
-
-  oldRoom.players.remove(player)
-  newRoom.players.push(player)
-  player.room = newRoom
-
-  game.allPlayers in: oldRoom, (p) ->
-    p.emit('action', {action: 'leave room', performer: player, room: oldRoom, portal: portal})
-
-  if portal?
-    for p in [portal, player]
-      p.emit('action', {action: 'enter portal', performer: player, portal: portal})
-
-  game.allPlayers in: newRoom, (p) ->
-    p.emit('action', {action: 'enter room', performer: player, room: newRoom, portal: portal})
 )
 
 

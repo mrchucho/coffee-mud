@@ -1,5 +1,5 @@
 EventEmitter = require('events').EventEmitter
-require './utils'
+require('./ext')
 
 class Client extends EventEmitter
   constructor: (@conn) ->

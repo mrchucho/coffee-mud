@@ -4,6 +4,7 @@ class Portal extends GameEntity
   constructor: (@description) ->
     @start = null
     @end   = null
+    super()
 
   toString: -> @description
 

@@ -1,10 +1,2 @@
-module.exports =
-
-  Array::remove = (o) ->
-    @splice(@indexOf(o), 1)
-
-  Array::first = ->
-    @[0]
-
-  Array::top = ->
-    @[@.length - 1]
+exports.after = (ms, cb) -> setTimeout cb, ms
+exports.every = (ms, cb) -> setInterval cb, ms
