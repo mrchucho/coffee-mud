@@ -1,11 +1,19 @@
 EventEmitter = require('events').EventEmitter
-require 'utils'
+require './utils'
 
 class Client extends EventEmitter
   constructor: (@conn) ->
     @handlers = []
-    @on('heard', (msg) -> @conn.write msg)
-    @on('end', -> @conn.end())
+    @on 'heard', (msg) ->
+      try
+        @conn.write msg
+      catch error
+        console.log "[ERROR] #{error}"
+    @on 'end', ->
+      try
+        @conn.end()
+      catch error
+        console.log "[ERROR] #{error}"
 
   display: (msg) -> @emit('heard', msg + "\n")
   prompt: (msg) -> @emit('heard', msg)
