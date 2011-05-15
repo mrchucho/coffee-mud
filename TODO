@@ -1,4 +1,4 @@
-* enter/leave room on enter/leave game/realm!
+DONE enter/leave room on enter/leave game/realm!
 * Unrecognized command error
 * Raise error if command is missing arguments
 * Run from a chroot jail, log to file (+logrotate)?

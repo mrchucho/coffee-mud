@@ -3,7 +3,7 @@ Client = require('./client')
 LoginHandler = require('./handlers')
 
 server = net.createServer (stream) ->
-  stream.setEncoding 'utf8'
+  stream.setEncoding 'ascii'
   client = new Client(stream)
 
   stream.on 'connect', ->
