@@ -8,12 +8,12 @@ class Client extends EventEmitter
       try
         @conn.write msg
       catch error
-        console.log "[ERROR] #{error}"
+        console.error "[ERROR] #{error}"
     @on 'end', ->
       try
         @conn.end()
       catch error
-        console.log "[ERROR] #{error}"
+        console.error "[ERROR] #{error}"
 
   display: (msg) -> @emit('heard', msg + "\n")
   prompt: (msg) -> @emit('heard', msg)
