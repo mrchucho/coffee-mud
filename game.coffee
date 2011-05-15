@@ -70,6 +70,21 @@ class Game extends EventEmitter
     else
       f(p) for own n, p of game.players
 
+  # e.g.
+  # game.everything in: player.room, (t) -> t...
+  # game.everything # in the game
+  everything: (args..., f) ->
+    opts = args.pop()
+    where = if opts.in? then opts.in else @
+    f(where)
+    if where.items?
+      f(item) for own n, item of where.items
+    if where.players?
+      for own n, player of where.players
+        f(player)
+        if player.items?
+          f(item) for item in player.items
+
 
 # The Game!
 game = new Game
@@ -134,11 +149,13 @@ game.on('enter realm', (player) ->
 )
 game.on('leave realm', (player) ->
   console.log("Player #{player.name} left the game")
+  game.everything in: player.room, (p) ->
+    p.emit('action', {action: 'leave room', performer: player, room: player.room})
   game.allPlayers except: player, (p) ->
     p.emit('action', {action: 'leave realm', performer: player})
-  # FIXME
-  for room in game.rooms
-    room.players.remove(player)
+
+  player.room.players.remove player
+  player.room = null
   delete game.players[player.name]
 )
 game.on('vision', (where, args) ->
