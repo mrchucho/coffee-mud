@@ -3,9 +3,11 @@ Logic = require './logic'
 
 class WindyRoom extends Logic
   constructor: ->
-    @on 'enter room', (event) ->
-      @i = every 5000, () => @inform(event.performer, "The wind blows...")
-    @on 'leave room', (event) -> clearInterval(@i)
+    @occupants = []
+    @on 'enter room', (event) -> @occupants.push event.performer
+    @on 'leave room', (event) -> @occupants.remove event.performer
+    every 8000, () =>
+      @inform(o, "The wind blows...") for o in @occupants
 
 
 exports.WindyRoom = WindyRoom
