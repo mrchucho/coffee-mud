@@ -1,0 +1,13 @@
+== Coffee MUD
+Coffee MUD is a simple MUD written in CoffeeScript and using Node.js.
+
+== Running Coffee MUD
+For now, Coffee MUD isn't configurable. Makefiles, etc. coming soon.
+
+coffee mud.coffee
+
+Alternatively, you can compile the CoffeeScript and run with node.
+
+== Requirements
+I've tested coffee-mud with CoffeeScript 1.1.1 and Node v0.4.7
+
