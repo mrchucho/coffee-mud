@@ -146,6 +146,8 @@ game.on('enter realm', (player) ->
   game.players[player.name] = player
   game.allPlayers except: player, (p) ->
     p.emit('action', {action: 'enter realm', performer: player})
+  game.everything in: room, (o) ->
+    o.emit('action', {action: 'enter room', performer:player, room: room})
 )
 game.on('leave realm', (player) ->
   console.log("Player #{player.name} left the game")
