@@ -37,7 +37,7 @@ class LoginHandler extends Handler
   handle: (data) ->
     switch @state
       when 'init'
-        @client.display "Welcome"
+        @client.display "Welcome to Coffee MUD"
         @client.prompt  "Please enter your name: "
         @state = 'entername'
       when 'entername'
