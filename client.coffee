@@ -22,7 +22,7 @@ class Client extends EventEmitter
     @removeHandler() while @handlers.length > 0
 
   update: (data) ->
-    @handlers.top().handle data
+    @handlers.top()?.handle data
 
   switchHandler: (handler) ->
     @handlers.top().leave() if @handlers.length isnt 0
