@@ -109,7 +109,7 @@ game.on('attempt say', (speaker, args) ->
 )
 game.on('attempt look', (looker, args) ->
   if [looker, looker.room].every((t) -> t.ask(looker, 'can look'))
-    target = if args?.target? then game.players[args.target] else looker.room
+    target = if args?.target? then looker.room.playerNamed(args.target) else looker.room
     if target?
       looker.emit('action', {action: 'see', target: target})
       target.emit('action', {action: 'announce', msg: "#{looker} looks at you."})
@@ -143,7 +143,7 @@ game.on('enter realm', (player) ->
   room = game.rooms.first()
   room.players.push player
   player.room = room
-  game.players[player.name] = player
+  game.players[player.name.toLowerCase()] = player
   game.allPlayers except: player, (p) ->
     p.emit('action', {action: 'enter realm', performer: player})
   game.everything in: room, (o) ->
@@ -158,7 +158,7 @@ game.on('leave realm', (player) ->
 
   player.room.players.remove player
   player.room = null
-  delete game.players[player.name]
+  delete game.players[player.name.toLowerCase()]
 )
 game.on('vision', (where, args) ->
   for player in where.players

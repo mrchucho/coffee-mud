@@ -21,5 +21,9 @@ class Room extends GameEntity
     opts.to.addPortal(named: opts.named, to: @) if opts.looped?
     portal
 
+  playerNamed: (name) ->
+    return null unless name?
+    (player for player in @players when player.named(name)).pop()
+
 
 module.exports = Room
