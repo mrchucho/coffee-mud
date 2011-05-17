@@ -1,5 +1,8 @@
-DONE enter/leave room on enter/leave game/realm!
 * Unrecognized command error
+* slash commands
+* use [portal]
+* Make it easier to read... spaces? bolding names?
+DONE enter/leave room on enter/leave game/realm!
 * Raise error if command is missing arguments
 * Run from a chroot jail, log to file (+logrotate)?
 * Should "actions" look like this instead: 'action', performer, {args:...}

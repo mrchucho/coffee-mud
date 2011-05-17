@@ -25,7 +25,7 @@ class Game extends EventEmitter
       else
         helpMsg = for c, u of game.commands
           "    #{u[1]} - #{u[2]}"
-        "The following commands are available:\n#{helpMsg.join('\n')}"
+        "The following commands are available:\r\n#{helpMsg.join('\r\n')}"
 
     player.emit('action', {action: 'announce', msg: msg})
 

@@ -15,7 +15,7 @@ class Client extends EventEmitter
       catch error
         console.error "[ERROR] #{error}"
 
-  display: (msg) -> @emit('heard', msg + "\n")
+  display: (msg) -> @emit('heard', msg + "\r\n")
   prompt: (msg) -> @emit('heard', msg)
 
   end: ->
