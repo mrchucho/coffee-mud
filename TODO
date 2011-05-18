@@ -1,3 +1,7 @@
+* Does "attempt enter portal" really need room: arg?
+* Should logic have "owner" property? If so, improve how GameEntity.addLogic
+  works. Maybe have it work more like Game.createRoom, etc.
+DONE enter/leave room on enter/leave game/realm!
 * Output filters: could be chainable, but for now go simple
   [EOL] = \n or \r\n
   [CLEAR]
@@ -10,7 +14,10 @@ DONE Class/Module organization: file only exports a Factory method that
   ...
   exports.createLogic = (name, owner) ->
     return new <name>(owner) # not sure how to do that part ;)
-
+  > This will be helpful for loading entities (and their logic) from YAML
+* Should logic have "owner" property? If so, improve how GameEntity.addLogic
+  works. Maybe have it work more like Game.createRoom, etc.
+DONE enter/leave room on enter/leave game/realm!
 * Unrecognized command error
 * slash commands
 * use [portal]

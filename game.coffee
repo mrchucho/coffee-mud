@@ -1,6 +1,7 @@
 require('./ext')
 EventEmitter = require('events').EventEmitter
 Room = require('./room')
+Player = require('./player')
 
 class Game extends EventEmitter
   constructor: ->
@@ -59,6 +60,12 @@ class Game extends EventEmitter
     @rooms.push room
     f room if f?
     room
+
+  createPlayer: (name, f) ->
+    player = new Player(name)
+    @players[name] = player
+    f player if f?
+    player
 
   # TODO make opts composible, e.g. except: player, in: room
   allPlayers: (args..., f) ->

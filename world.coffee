@@ -28,7 +28,8 @@ commonRoom = Game.createRoom("Common Room", (room) ->
     named: "Trapdoor",
     to: Game.createRoom("Dungeon")
   ).addLogic "LockedDoor"
-
+  Game.createPlayer "Pedestrian", (mob) ->
+    room.addPlayer(mob).addLogic(new logic.Wandering(mob))
 )
 
 console.log("The Game now has #{Game.rooms.length} rooms:")

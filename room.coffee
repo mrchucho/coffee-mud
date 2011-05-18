@@ -25,5 +25,9 @@ class Room extends GameEntity
     return null unless name?
     (player for player in @players when player.named(name)).pop()
 
+  addPlayer: (player) ->
+    @players.push player
+    player.room = @
+    player
 
 module.exports = Room
