@@ -1,3 +1,16 @@
+* Output filters: could be chainable, but for now go simple
+  [EOL] = \n or \r\n
+  [CLEAR]
+  [BOLD][/BOLD]
+* Class/Module organization: file only exports a Factory method that
+  instantiates one of the "private" classes in the file/module:
+
+  class FooLogic
+  class MooLogic
+  ...
+  exports.createLogic = (name, owner) ->
+    return new <name>(owner) # not sure how to do that part ;)
+
 * Unrecognized command error
 * slash commands
 * use [portal]
