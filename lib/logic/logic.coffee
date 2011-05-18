@@ -1,6 +1,7 @@
 EventEmitter = require('events').EventEmitter
+
 class Logic extends EventEmitter
-  constructor: ->
+  constructor: (@gameEntity) ->
     @constraints = null
 
   # Helpers

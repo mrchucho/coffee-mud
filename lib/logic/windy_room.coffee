@@ -2,7 +2,7 @@
 Logic = require './logic'
 
 class WindyRoom extends Logic
-  constructor: ->
+  constructor: (@gameEntity) ->
     @occupants = []
     @on 'enter room', (event) -> @occupants.push event.performer
     @on 'leave room', (event) -> @occupants.remove event.performer

@@ -1,5 +1,4 @@
 Game  = require('./game').Game
-logic = require('./lib/logic/')
 # -----------------------------------------------------------------------------
 # Create a magical world...
 # -----------------------------------------------------------------------------
@@ -9,7 +8,7 @@ hall = Game.createRoom("Entrance Hall", (room) ->
     named: "Closet Door",
     looped: true,
     to: Game.createRoom("Closet", (room) ->
-      room.addLogic(new logic.SensoryDepravationRoom())
+      room.addLogic "SensoryDepravationRoom"
       room.size = "tiny"
     )
   )
@@ -18,7 +17,8 @@ hall = Game.createRoom("Entrance Hall", (room) ->
 anteChamber = Game.createRoom("Antechamber", (room) ->
   room.size = "very small"
   room.addPortal(named: "Door", to: hall, looped:true)
-  room.addLogic new logic.WindyRoom()
+  room.addLogic "WindyRoom"
+  room.addLogic "HACKZ" # Test loading "rogue" logic
 )
 
 commonRoom = Game.createRoom("Common Room", (room) ->
@@ -27,7 +27,7 @@ commonRoom = Game.createRoom("Common Room", (room) ->
   room.addPortal(
     named: "Trapdoor",
     to: Game.createRoom("Dungeon")
-  ).addLogic new logic.LockedDoor()
+  ).addLogic "LockedDoor"
 
 )
 

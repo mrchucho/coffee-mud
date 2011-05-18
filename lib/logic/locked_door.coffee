@@ -1,7 +1,7 @@
 Logic = require './logic'
 
 class LockedDoor extends Logic
-  constructor: ->
+  constructor: (@gameEntity) ->
     @constraints =
       'can enter portal': (who, what) =>
         @inform who, "#{what} is locked"

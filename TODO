@@ -2,7 +2,7 @@
   [EOL] = \n or \r\n
   [CLEAR]
   [BOLD][/BOLD]
-* Class/Module organization: file only exports a Factory method that
+DONE Class/Module organization: file only exports a Factory method that
   instantiates one of the "private" classes in the file/module:
 
   class FooLogic

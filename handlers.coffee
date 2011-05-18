@@ -16,7 +16,7 @@ class GameHandler extends Handler
 
   enter: ->
     # add logic from db/template
-    @player.addLogic new Reporter(@player, @client)
+    @player.logic.push new Reporter(@player, @client) # special case...
     Game.emit 'enter realm', @player
 
   leave: ->

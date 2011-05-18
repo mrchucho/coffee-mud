@@ -1,7 +1,7 @@
 Logic = require './logic'
 
 class SensoryDepravationRoom extends Logic
-  constructor: ->
+  constructor: (@gameEntity) ->
     @constraints =
       'can look': (who, what) -> false
       'can say': (who, what) -> false

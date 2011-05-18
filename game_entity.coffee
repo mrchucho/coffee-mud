@@ -1,13 +1,13 @@
 EventEmitter = require('events').EventEmitter
+logic = require('./logic')
 
 class GameEntity extends EventEmitter
   constructor: ->
     @logic = []
     @logicFor = {}
-    @on('action', (args) ->
+    @on 'action', (args) ->
       console.log("[#{@}] is handling [#{args.action}]")
       logic.emit(args.action, args) for logic in @logic
-    )
 
   named: (name) ->
     name.toLowerCase() == @toString().toLowerCase()
@@ -18,11 +18,12 @@ class GameEntity extends EventEmitter
     return true unless @logicFor[does]
     @logicFor[does].every (f) -> f(who, what)
 
-  addLogic: (logic) ->
-    for constraint, callback of logic.constraints
-      @logicFor[constraint] ||= []
-      @logicFor[constraint].push callback
-    @logic.push logic
+  addLogic: (logicName) ->
+    logic.createLogic logicName, @, (newLogic) =>
+      for constraint, callback of newLogic.constraints
+        @logicFor[constraint] ||= []
+        @logicFor[constraint].push callback
+      @logic.push newLogic
 
 
 module.exports = GameEntity
