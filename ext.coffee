@@ -1,4 +1,4 @@
-module.exports =
+module.exports = \
 
   Array::remove = (o) ->
     @splice(@indexOf(o), 1)
